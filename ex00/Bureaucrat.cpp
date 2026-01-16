@@ -68,3 +68,11 @@ std::string Bureaucrat::getName() const {
 int Bureaucrat::getGrade() const {
 	return (this->_grade);
 }
+
+const char* Bureaucrat::GradeTooHighException::what() const noexcept {
+	return "Bureaucrat grade is too high!";
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const noexcept {
+	return "Bureaucrat grade is too low!";
+}

@@ -50,16 +50,12 @@ public:
 	// Exceptions
 	class GradeTooHighException : public std::exception {
 	public:
-		const char* what() const noexcept override {
-			return "Bureaucrat grade is too high!";
-		}
+		const char* what() const noexcept override;
 	};
 
 	class GradeTooLowException : public std::exception {
 	public:
-		const char* what() const noexcept override {
-			return "Bureaucrat grade is too low!";
-		}
+		const char* what() const noexcept override;
 	};
 };
 
