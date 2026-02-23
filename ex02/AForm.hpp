@@ -6,7 +6,7 @@
 /*   By: fredchar <fredchar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 12:46:06 by fredchar          #+#    #+#             */
-/*   Updated: 2026/02/05 17:31:44 by fredchar         ###   ########.fr       */
+/*   Updated: 2026/02/23 15:19:59 by fredchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ private:
 	bool				_signed;
 	const int			_signatureGrade;
 	const int			_executionGrade;
+	const std::string	_target;
 
 	static constexpr int HIGHEST_GRADE = 1;
 	static constexpr int LOWEST_GRADE = 150;
@@ -34,7 +35,7 @@ public:
 	AForm(const std::string& name, const int signGrade, const int execGrade);
 	AForm(const AForm& other);
 	AForm& operator=(const AForm& other);
-	~AForm();
+	virtual ~AForm();
 
 	// Getters
 	[[nodiscard]] std::string getName() const;
@@ -43,9 +44,12 @@ public:
 	[[nodiscard]] bool getSigned() const;
 
 	// Grade modification
-	virtual void incrementGrade() const = 0;
+	void incrementGrade();
 	void decrementGrade();
 
+	// Pure virtual function
+	virtual void execute(Bureaucrat const & executor);
+	virtual void executeAction() const = 0;
 	// Exceptions
 	class GradeTooHighException : public std::exception {
 	public:
