@@ -6,61 +6,40 @@
 /*   By: fredchar <fredchar@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 22:09:08 by fredchar          #+#    #+#             */
-/*   Updated: 2026/02/05 17:32:39 by fredchar         ###   ########.fr       */
+/*   Updated: 2026/02/23 18:20:39 by fredchar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "AForm.hpp"
-#include "Bureaucrat.hpp"
-#include "AForm.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-int main() {
-	std::cout << "=== PHASE 1: FORM CONSTRUCTOR TESTS ===" << std::endl;
-	try {
-		std::cout << "Creating a form with grade 0 (Too High)..." << std::endl;
-		AForm f1("Tax Return", 0, 50);
-	} catch (const std::exception& e) {
-		std::cerr << "Caught: " << e.what() << std::endl;
-	}
+#include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
-	try {
-		std::cout << "\nCreating a form with grade 151 (Too Low)..." << std::endl;
-		AForm f2("Parking Ticket", 151, 150);
-	} catch (const std::exception& e) {
-		std::cerr << "Caught: " << e.what() << std::endl;
-	}
+int main()
+{
+    std::srand(std::time(NULL));
 
-	std::cout << "\n=== PHASE 2: SIGNING INTERACTION TESTS ===" << std::endl;
+    Bureaucrat boss("Boss", 1);
 
-	Bureaucrat boss("The Boss", 1);
-	Bureaucrat intern("The Intern", 150);
-	AForm topSecret("Top Secret Document", 5, 1);
-	AForm basicForm("Lunch Request", 150, 150);
+    AForm* forms[3];
 
-	std::cout << "\n--- Current States ---" << std::endl;
-	std::cout << boss << std::endl;
-	std::cout << intern << std::endl;
-	std::cout << topSecret << std::endl;
-	std::cout << basicAForm << std::endl;
+    forms[0] = new ShrubberyCreationForm("garden");
+    forms[1] = new RobotomyRequestForm("Bender");
+    forms[2] = new PresidentialPardonForm("Arthur Dent");
 
-	std::cout << "\n--- Action: Intern tries to sign Top Secret ---" << std::endl;
-	// This will internally call topSecret.beSigned(intern)
-	// Intern's grade 150 is > AForm's required 5, so it throws.
-	intern.signAForm(topSecret); 
+    for (int i = 0; i < 3; i++)
+    {
+        boss.signForm(*forms[i]);
+        boss.executeForm(*forms[i]);
+        std::cout << "-------------------\n";
+    }
 
-	std::cout << "\n--- Action: Boss tries to sign Top Secret ---" << std::endl;
-	// Boss's grade 1 is <= AForm's required 5, so it succeeds.
-	boss.signAForm(topSecret);
+    for (int i = 0; i < 3; i++)
+        delete forms[i];
 
-	std::cout << "\n--- Action: Intern tries to sign Basic AForm ---" << std::endl;
-	// Intern's grade 150 is <= AForm's required 150.
-	intern.signAForm(basicForm);
-
-	std::cout << "\n--- Final States ---" << std::endl;
-	std::cout << topSecret << std::endl;
-	std::cout << basicAForm << std::endl;
-
-	return 0;
+    return 0;
 }
